@@ -1,3 +1,24 @@
-<h1>
-  {{title}}
-</h1>
+
+  <app-login></app-login>
+
+<!--{{ items | async | json}}-->
+
+<md-list>
+  <md-list-item *ngFor="let item of items | async">
+
+    <div *ngIf="!edit">
+      <span class="text">{{item.text}}</span>
+      <button class="inline" md-raised-button	 (click)="edit = !edit">edit</button>
+    </div>
+
+    <div *ngIf="edit">
+      <md-input-container>
+        <input mdInput type="text" #updateText value="{{ item.text }}">
+      </md-input-container>
+
+      <button md-raised-button	 (click)="updateItem(item.$key, updateText.value)">Update</button>
+      <button md-raised-button	 (click)="deleteItem(item.$key)">Delete</button>
+    </div>
+
+  </md-list-item>
+</md-list>

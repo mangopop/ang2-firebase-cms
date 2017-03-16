@@ -1,0 +1,22 @@
+
+
+<md-toolbar color="primary">
+  <span class="fill-remaining-space">firebase cms</span>
+
+
+<!--{{ user.value | json }}-->
+
+<p *ngIf="loggedIn">Logged in as: {{ (af.auth | async)?.auth.email }} </p>
+
+<form novalidate [formGroup]="user" (ngSubmit)="onSubmit(user)">
+  <div *ngIf="!loggedIn">
+    <input placeholder="name" formControlName="email" type="email">
+    <input placeholder="password" formControlName="password" type="text">
+  </div>
+
+  <button md-button *ngIf="!loggedIn" type="submit">Login</button>
+  <button md-button *ngIf="loggedIn" (click)="logout()">Logout</button>
+</form>
+
+
+</md-toolbar>
