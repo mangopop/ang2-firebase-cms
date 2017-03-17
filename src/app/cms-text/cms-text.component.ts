@@ -23,6 +23,7 @@ export class CmsTextComponent implements OnInit {
 
   update(newText: string) {
     // this.edit = false;
+    // Genius! using text allows us to be abstract!
     this.content.update({ text: newText });
   }
 
