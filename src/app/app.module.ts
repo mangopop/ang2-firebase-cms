@@ -6,8 +6,14 @@ import { HttpModule } from '@angular/http';
 import { AngularFireModule , AuthProviders, AuthMethods } from 'angularfire2';
 import { MaterialModule } from '@angular/material';
 import { AppComponent } from './app.component';
+
 import 'hammerjs';
 import { LoginComponent } from './login/login.component';
+
+// import { FileuploadComponent } from './fileupload/fileupload.component';
+// import { FileUploadModule } from 'ng2-file-upload';
+import { CmsTextComponent } from './cms-text/cms-text.component';
+
 
 // Must export the config
 export const firebaseConfig = {
@@ -26,10 +32,13 @@ const myFirebaseAuthConfig = {
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent
+    LoginComponent,
+    // FileuploadComponent,
+    CmsTextComponent
   ],
   imports: [
     AngularFireModule.initializeApp(firebaseConfig,myFirebaseAuthConfig),
+    // FileUploadModule,
     MaterialModule,
     BrowserModule,
     FormsModule,

@@ -1,0 +1,7 @@
+<!--{{ (content | async | json) }}-->
+
+<textarea  #updateText  [innerHTML]="(content | async)?.$value" name="" id="" cols="60" rows="3"></textarea>
+
+<div>
+  <a (click)="update( updateText.value )">update</a>
+</div>
