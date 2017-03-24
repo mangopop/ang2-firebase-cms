@@ -19,6 +19,9 @@ export class AuthService {
 
   }
 
+  /**
+   * returns the AF auth
+   */
   checkLogin(): Observable<any> {
     console.log('checking login...');
     return this.af.auth;
@@ -32,11 +35,19 @@ export class AuthService {
     // // return Observable.of(false);
   }
 
+  /**
+   * calls auth logout
+   */
   logout() :void {
     this.af.auth.logout();
     this.isLoggedIn = false;
   }
 
+  /**
+   * logs in using auth
+   * @param email 
+   * @param password 
+   */
   login(email,password): string {
     // console.log(this.user.value);
     this.af.auth.login({
