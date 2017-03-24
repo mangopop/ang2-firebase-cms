@@ -1,6 +1,6 @@
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Subject } from 'rxjs/Subject';
-import {AngularFire} from 'angularfire2';
+import { AngularFire, FirebaseListObservable } from 'angularfire2';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
@@ -10,13 +10,20 @@ import 'rxjs/add/operator/delay';
 @Injectable()
 export class AuthService {
 
-  isLoggedIn: boolean = false;
+  //Pitfall #1 - don't expose subjects directly
+
+  private _isLoggedIn: BehaviorSubject<boolean>;
+  public isLoggedIn: Observable<boolean>;
 
   // store the URL so we can redirect after logging in
   redirectUrl: string;
 
-  constructor(public af: AngularFire) {
+  constructor(public af: AngularFire) { }
 
+  getEmail(): Observable<string> {
+    return this.af.auth.map(auth => {
+      if(auth != null) return auth.auth.email
+    })
   }
 
   /**
@@ -25,22 +32,20 @@ export class AuthService {
   checkLogin(): Observable<any> {
     console.log('checking login...');
     return this.af.auth;
-    // this.af.auth.subscribe(auth => {
-    //   console.log(auth);
-    //   if (auth != null) {        
-    //     return new BehaviorSubject(true).do(val => this.isLoggedIn = true);
-    //   }
-    // });
-    // return new BehaviorSubject(false);    
-    // // return Observable.of(false);
+
+  }
+
+  //returns an observable boolean
+  checkLogin2(): Observable<Boolean> {
+    return this.af.auth.map(auth => auth != null ? true : false)
   }
 
   /**
    * calls auth logout
    */
-  logout() :void {
+  logout(): void {
     this.af.auth.logout();
-    this.isLoggedIn = false;
+    // this.isLoggedIn = false;
   }
 
   /**
@@ -48,7 +53,7 @@ export class AuthService {
    * @param email 
    * @param password 
    */
-  login(email,password): string {
+  login(email, password): string {
     // console.log(this.user.value);
     this.af.auth.login({
       email: email,

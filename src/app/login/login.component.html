@@ -9,7 +9,7 @@
 
 <!--{{ loggedIn | json }}-->
 
-<p *ngIf="loggedIn">Logged in as: {{ email }} </p>
+<p *ngIf="loggedIn">Logged in as: {{ getEmail() | async }} </p>
 
 <p *ngIf="error">{{message}}</p>
 
