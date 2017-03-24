@@ -1,12 +1,17 @@
-
-
 <md-toolbar color="primary">
+
   <span class="fill-remaining-space">firebase cms</span>
+  <nav>
+    <a routerLink="">Home</a>
+    <a routerLink="about">About</a>
+  </nav>
+  
 
+<!--{{ loggedIn | json }}-->
 
-<!--{{ user.value | json }}-->
+<p *ngIf="loggedIn">Logged in as: {{ email }} </p>
 
-<p *ngIf="loggedIn">Logged in as: {{ (af.auth | async)?.auth.email }} </p>
+<p *ngIf="error">{{message}}</p>
 
 <form novalidate [formGroup]="user" (ngSubmit)="onSubmit(user)">
   <div *ngIf="!loggedIn">

@@ -7,12 +7,18 @@ import { AngularFireModule , AuthProviders, AuthMethods } from 'angularfire2';
 import { MaterialModule } from '@angular/material';
 import { AppComponent } from './app.component';
 
+import { AuthService } from './auth.service';
+import { AuthGuard } from './auth-guard.service';
+import appRoutes from "./app.routes";
+
 import 'hammerjs';
 import { LoginComponent } from './login/login.component';
 
 // import { FileuploadComponent } from './fileupload/fileupload.component';
 // import { FileUploadModule } from 'ng2-file-upload';
 import { CmsTextComponent } from './cms-text/cms-text.component';
+import { HomeComponent } from './home/home.component';
+import { AboutComponent } from './about/about.component';
 
 
 // Must export the config
@@ -29,14 +35,18 @@ const myFirebaseAuthConfig = {
   method: AuthMethods.Password
 }
 
+
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     // FileuploadComponent,
-    CmsTextComponent
+    CmsTextComponent,
+    HomeComponent,
+    AboutComponent
   ],
   imports: [
+    appRoutes,
     AngularFireModule.initializeApp(firebaseConfig,myFirebaseAuthConfig),
     // FileUploadModule,
     MaterialModule,
@@ -45,8 +55,7 @@ const myFirebaseAuthConfig = {
     ReactiveFormsModule,
     HttpModule
   ],
-  providers: [  
-    ],
+  providers: [ AuthGuard,AuthService ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,7 +1,8 @@
 <!--{{ (content | async | json) }}-->
 
-<textarea  #updateText  [innerHTML]="(content | async)?.text" name="" id="" cols="60" rows="3"></textarea>
+<span *ngIf="!loggedIn" #updateText  [innerHTML]="(content | async)?.text"></span>
 
-<div>
+<div *ngIf="loggedIn">
+<textarea #updateText  [innerHTML]="(content | async)?.text" name="" id="" cols="60" rows="3"></textarea>
   <a (click)="update( updateText.value )">update</a>
 </div>

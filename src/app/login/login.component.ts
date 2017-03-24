@@ -1,7 +1,12 @@
-import { Component, OnInit } from '@angular/core';
 import { AngularFire } from 'angularfire2';
+import { Observable } from 'rxjs/Observable';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { AuthService } from './../auth.service';
+
 import { User } from '../../interfaces/signup';
+import { Subject } from "rxjs/Subject";
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 @Component({
   selector: 'app-login',
@@ -10,38 +15,40 @@ import { User } from '../../interfaces/signup';
 })
 export class LoginComponent implements OnInit {
 
-  loggedIn: Boolean;
+  loggedIn: Boolean = false;
+  email: string;
+  message:String;
+  error: Boolean = false;
   user: FormGroup;
 
-  constructor(public af: AngularFire) {
-    this.af.auth.subscribe(auth => {
-      console.log(auth);
-      if (auth != null) { this.loggedIn = true }
-    });
+  constructor(public Auth: AuthService, public af:AngularFire) {
   }
 
-  login(userEmail, userPassword) {
-    console.log(userEmail.value, userPassword.value);
-    this.af.auth.login({
-      email: userEmail.value,
-      password: userPassword.value,
-    });
+  onSubmit(){
+    this.message = this.Auth.login(this.user.value.email, this.user.value.password);
+    this.checkLogin();
   }
 
-  logout() {
+  logout(){
     this.af.auth.logout();
-    this.loggedIn = false;
+    this.checkLogin();
   }
 
-  onSubmit() {
-    console.log(this.user.value);
-    this.af.auth.login({
-      email: this.user.value.email,
-      password: this.user.value.password,
-    });
+  checkLogin(){
+    this.Auth.checkLogin().subscribe(status => {
+      if (status != null)  {
+        this.loggedIn = true;
+        this.email = status.auth.email;
+      }else{
+        this.loggedIn = false;
+        this.email = '';
+      }
+    });  
   }
 
   ngOnInit() {
+    this.checkLogin();
+
     this.user = new FormGroup({
       email: new FormControl(''),
       password: new FormControl('')
